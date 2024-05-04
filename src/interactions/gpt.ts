@@ -28,7 +28,7 @@ export default class GPT implements BotInteraction {
                 option
                     .setName('creativity')
                     .addChoices(
-                        { name: 'Schizo', value: 1.5 },
+                        { name: 'Schizo', value: 2 },
                         { name: 'Normal', value: 1 },
                         { name: 'Strict', value: 0.5 }
                     )
