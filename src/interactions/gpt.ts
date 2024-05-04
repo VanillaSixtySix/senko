@@ -21,6 +21,7 @@ export default class GPT implements BotInteraction {
     ];
 
     conversations = new Map<string, ConversationMessage[]>();
+    conversationClearTimeouts = new Map<string, Timer>();
 
     async onChatInteraction(interaction: ChatInputCommandInteraction) {
         const query = interaction.options.getString('query')!;
@@ -79,6 +80,11 @@ export default class GPT implements BotInteraction {
             responseMessage,
         ]);
 
+        clearTimeout(this.conversationClearTimeouts.get(conversationKey));
+        this.conversationClearTimeouts.set(conversationKey, setTimeout(() => {
+            this.conversations.delete(conversationKey);
+        }, 60 * 60 * 1000));
+
         const cleaned = responseMessage.content
             .split('\n')
             .map(line => '> ' + line)
@@ -103,6 +109,8 @@ export default class GPT implements BotInteraction {
 
             if (confirmation.customId === 'clear') {
                 this.conversations.delete(conversationKey);
+                clearTimeout(this.conversationClearTimeouts.get(conversationKey));
+                this.conversationClearTimeouts.delete(conversationKey);
                 clearButton
                     .setLabel('Memory Cleared')
                     .setDisabled(true);
