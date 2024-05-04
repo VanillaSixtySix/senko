@@ -1,6 +1,6 @@
 {
     "token": "",
     "clientId": "",
-    "guildId": "",
+    "guildIds": [""],
     "openAIKey": ""
 }

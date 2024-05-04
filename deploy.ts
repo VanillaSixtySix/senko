@@ -20,17 +20,21 @@ try {
     }
 
     if (Bun.argv.includes('--clear')) {
-        await rest.put(
-            Routes.applicationGuildCommands(config.clientId, config.guildId),
-            { body: [] },
-        )
+        for (const guildId of config.guildIds) {
+            await rest.put(
+                Routes.applicationGuildCommands(config.clientId, guildId),
+                { body: [] },
+            )
+        }
         console.info('Cleared existing application interactions');
     }
 
-    await rest.put(
-        Routes.applicationGuildCommands(config.clientId, config.guildId),
-        { body: interactions },
-    );
+    for (const guildId of config.guildIds) {
+        await rest.put(
+            Routes.applicationGuildCommands(config.clientId, guildId),
+            { body: interactions },
+        );
+    }
 
     console.info('Finished refreshing application interactions');
 } catch (error) {
