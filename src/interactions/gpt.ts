@@ -17,6 +17,23 @@ export default class GPT implements BotInteraction {
                     .setName('query')
                     .setDescription('The query to send')
                     .setRequired(true)
+            )
+            .addStringOption(option =>
+                option
+                    .setName('systemprompt')
+                    .setDescription('The system prompt to use')
+                    .setRequired(false)
+            )
+            .addNumberOption(option =>
+                option
+                    .setName('creativity')
+                    .addChoices(
+                        { name: 'Schizo', value: 1.5 },
+                        { name: 'Normal', value: 1 },
+                        { name: 'Strict', value: 0.5 }
+                    )
+                    .setDescription('Initializes the temperature of the system prompt')
+                    .setRequired(false)
             ),
         new SlashCommandBuilder()
             .setName('senko')
@@ -60,6 +77,15 @@ export default class GPT implements BotInteraction {
     async gptInteraction(interaction: ChatInputCommandInteraction, flavor: Flavor, defaultSystemPrompt: string, temperature: number = 1) {
         const query = interaction.options.getString('query')!;
 
+        const systemPrompt = interaction.options.getString('systemprompt');
+        if (systemPrompt) {
+            defaultSystemPrompt = systemPrompt;
+        }
+
+        const creativity = interaction.options.getNumber('creativity');
+        if (creativity) {
+            temperature = creativity;
+        }
 
         const conversationKey = interaction.channelId + interaction.user.id;
 
@@ -163,7 +189,7 @@ export default class GPT implements BotInteraction {
 
         const collectorFilter = (i: any) => i.user.id === interaction.user.id;
         try {
-            const confirmation = await followUpMessage!.awaitMessageComponent({ filter: collectorFilter, time: 60 * 1000 });
+            const confirmation = await followUpMessage!.awaitMessageComponent({ filter: collectorFilter, time: 180 * 1000 });
 
             if (confirmation.customId === 'clear') {
                 this.conversations.delete(conversationKey);
