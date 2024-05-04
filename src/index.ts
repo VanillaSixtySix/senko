@@ -7,14 +7,7 @@ import config from '../config.json';
 const db = new Database("senko.db");
 
 const client = new BotClient({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.AutoModerationExecution,
-        GatewayIntentBits.MessageContent,
-    ],
+    intents: [],
     allowedMentions: {
         parse: [],
         repliedUser: true,
