@@ -36,12 +36,12 @@ export default class GPT implements BotInteraction {
                     role: 'system',
                     content: 'You are an assistant.',
                 },
-                {
-                    role: 'user',
-                    content: query,
-                },
             ];
         }
+        conversation.push({
+            role: 'user',
+            content: query,
+        });
 
         const body = {
             model: 'gpt-4-turbo',
