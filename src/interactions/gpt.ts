@@ -6,6 +6,8 @@ import config from '../../config.json';
 export default class GPT implements BotInteraction {
     constructor(private client: BotClient) {}
 
+    static guildOnly = false;
+
     static builders = [
         new SlashCommandBuilder()
             .setName('gpt')

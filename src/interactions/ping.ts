@@ -23,6 +23,8 @@ interface OpenAIStatusResponse {
 export default class Ping implements BotInteraction {
     constructor(private client: BotClient) {}
 
+    static guildOnly = false;
+
     static builders = [
         new SlashCommandBuilder()
             .setName('ping')

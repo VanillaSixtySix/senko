@@ -4,6 +4,8 @@ import { BotClient } from './BotClient';
 export class BotInteraction {
     constructor(client: BotClient) {}
 
+    static guildOnly?: boolean;
+
     static builders?: (SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | ContextMenuCommandBuilder)[] = [];
 
     init?: () => Promise<void>;
